@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {IrcService} from '@discutea/services/irc.service';
 
 @Component({
     selector: 'app-connexion',
@@ -10,12 +11,11 @@ export class ConnexionComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
     submitted = false;
-    returnUrl: string;
 
     constructor(
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private ircService: IrcService
     ) {
-
     }
 
     ngOnInit() {
@@ -34,12 +34,16 @@ export class ConnexionComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
 
+        this.ircService.connection(this.loginForm.value);
+
         // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
         }
 
         this.loading = true;
+
+
         // Todo: connect user
     }
 
